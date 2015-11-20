@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 Demo: 5-div bar chart</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+		<script type="text/javascript" src="d3/d3.tip.js"></script>
+		<style type="text/css">
+			.d3-tip {
+	 				 line-height: 1;
+	 				 font-weight: bold;
+	 				 padding: 12px;
+	 				 background: rgba(0, 0, 0, 0.8);
+	 				 color: #fff;
+					  border-radius: 2px;
+			}
+			/* Creates a small triangle extender for the tooltip 
+		.d3-tip:after {
+		  box-sizing: border-box;
+		  display: inline;
+		  font-size: 10px;
+		  width: 100%;
+		  line-height: 1;
+		  color: rgba(0, 0, 0, 0.8);
+		  content: "\25BC";
+		  position: absolute;
+		  text-align: center;
+		}
+
+		/* Style northward tooltips differently 
+		.d3-tip.n:after {
+		  margin: -1px 0 0 0;
+		  top: 100%;
+		  left: 0;
+		}*/
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+		var w=600,barPadding=1, /*used width padding if more values then width of the bar becomes thin*/fillColor="teal",textColor="white",textSize="11px",textFamily= "sans-serif";
+		var dataset=[ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,11, 12, 15, 20, 18, 17, 16, 18, 23,52,77,85,90,123];
+
+		//Returns the max value of array
+		function getMax(array){
+    		return Math.max.apply(Math,array);
+		}
+		var h = getMax(dataset)*4;
+
+		var tip=d3.tip().attr("class","d3-tip")
+				  .offset([-10, 0])
+				  .html(function(d){
+				  	return "Data:"+d;//"<strong>Data:</strong> <span style='color:red'>" + d + "</span>";
+				  })
+				
+
+		var svg=d3.select("body")
+				  .append("svg")
+				  .attr("width",w)
+				  .attr("height",h);
+
+				  svg.call(tip);
+
+		var bar=svg.selectAll("rect")
+				  .data(dataset)
+				  .enter()
+			      .append("rect")
+			      .attr("x",function(d,i)
+					      {
+					      	/*i is each value position in the dataset for padding
+					      	return i*21;*/
+					      	//For dynamic cordinates i.e still the values increase it should fit into the SVG
+					      	return i * (w / dataset.length);
+					      })
+			      .attr("y",function(d){
+			      	return h-(d*4);
+			      })
+			      .attr("width",(w / dataset.length - barPadding))
+			      .attr("height",function(d)
+			      	{
+			      		return d*4;
+			      	})
+			      .attr("fill",fillColor)
+			      .on("mouseover",tip.show)
+			      .on("mouseout",tip.hide);
+
+
+		var textInfo=svg.selectAll("text")
+			         .data(dataset)
+			         .enter()
+			         .append("text")
+			         .text(function(d){
+			         	return d;
+			         })
+			         .attr("x",function(d,i)
+					      {
+					      	return i * (w / dataset.length)+5;
+					      })
+			         .attr("y",function(d){
+			      		return h-(d*4)+15;
+			     	 })
+			     	 .attr("font-family",textFamily)
+   					 .attr("font-size", textSize)
+                     .attr("fill",textColor);
+		</script>
+	</body>
+</html>

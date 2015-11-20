@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 Demo: 5-div bar chart</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+		var w=600,barPadding=1,h=200, /*used width padding if more values then width of the bar becomes thin*/fillColor="teal",textColor="white",textSize="11px",textFamily= "sans-serif";
+		var dataset=[ 5, 10];
+
+		var svg=d3.select("body")
+				  .append("svg")
+				  .width("width",w)
+				  .height("height",h);
+
+		var arc = d3.svg.arc().startAngle(0 * (Math.PI/180)); //just radians
+
+		</script>
+	</body>
+</html>
